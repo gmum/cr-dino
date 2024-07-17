@@ -1,0 +1,19 @@
+import channels.gin_configs.configurables
+import channels.gin_configs.external_configurables
+
+FeatureDataset.feature_file = ''
+FeatureDataset.label_file = ''
+
+MLP.num_features = 768
+MLP.num_out = 25
+
+MLPTraining.model = @MLP()
+MLPTraining.learning_rate = 1e-3
+MLPTraining.weight_decay = 1e-6
+MLPTraining.scheduler_step = 25
+MLPTraining.criterion = @MaskedBCE
+MLPTraining.tensorboard_dir = ''
+MLPTraining.model_path = ''
+MLPTraining.optimizer = @Adam
+MLPTraining.epochs = 100
+MLPTraining.save_epoch = 10

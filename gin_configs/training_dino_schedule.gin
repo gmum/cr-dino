@@ -1,0 +1,36 @@
+import gin_configs.configurables
+import gin_configs.external_configurables
+
+DataAugmentationDINO.global_crops_scale = (0.4, 1.)
+DataAugmentationDINO.local_crops_scale = (0.05, 0.4)
+DataAugmentationDINO.local_crops_number = 8
+
+
+CellPaintDataset.metadata_file = ''
+CellPaintDataset.norm_file_mean = ''
+CellPaintDataset.norm_file_std = '
+CellPaintDataset.dataset_base = ''
+CellPaintDataset.control = False
+CellPaintDataset.single_cell = False
+CellPaintDataset.transforms = [@RepeatChannels(), @DataAugmentationDINO()]
+
+ScheduleChannelMask.min_ch=2
+ScheduleChannelMask.max_ch=5
+ScheduleChannelMask.total_it = 301
+
+PositionalEncoding.d_model = 768
+PositionalEncoding.dropout = 0.1
+
+DINOTrainingProcedure.epochs = 301
+DINOTrainingProcedure.model_name = 'DINO_schedule'
+DINOTrainingProcedure.model_saving_path = ''
+DINOTrainingProcedure.tensorboard_dir = ''
+DINOTrainingProcedure.dataset = @CellPaintDataset()
+DINOTrainingProcedure.collate_fn = @basic_collate_fn
+DINOTrainingProcedure.optimizer = @AdamW
+DINOTrainingProcedure.num_workers = 8
+DINOTrainingProcedure.batch_size = 8
+DINOTrainingProcedure.apply_masking = True
+DINOTrainingProcedure.mask_generator = @ScheduleChannelMask()
+DINOTrainingProcedure.pe_function = @PositionalEncoding()
+

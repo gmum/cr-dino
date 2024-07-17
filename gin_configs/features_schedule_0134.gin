@@ -1,0 +1,32 @@
+import channels.gin_configs.configurables
+import channels.gin_configs.external_configurables
+
+FiveCropStack.size = 224
+ZeroChannels.channels = [2]
+
+CellPaintDataset.metadata_file = ''
+CellPaintDataset.norm_file_mean = ''
+CellPaintDataset.norm_file_std = ''
+CellPaintDataset.dataset_base = ''
+CellPaintDataset.control = False
+CellPaintDataset.single_cell = False
+CellPaintDataset.transforms = [@ZeroChannels(), @FiveCropStack()]
+CellPaintDataset.row_info = True
+
+ResNet.resnet_type = 'resnet50'
+ResNet.input_channels=5
+ResNet.output_size = 512
+ResNet.checkpoint = '/'
+ResNet.from_dino = True
+ResNet.checkpoint_key = 'state_dict'
+ResNet.load_without_classifier=False
+
+DINOFeatureExtractionResNet.resnet_model = @ResNet()
+DINOFeatureExtractionResNet.saving_path = ''
+DINOFeatureExtractionResNet.features_file_name = 'model_schedule_channels_0134.csv'
+DINOFeatureExtractionResNet.dataset = @CellPaintDataset()
+DINOFeatureExtractionResNet.collate_fn = @info_collate_fn
+DINOFeatureExtractionResNet.batch_size = 256
+DINOFeatureExtractionResNet.num_workers = 4
+
+
